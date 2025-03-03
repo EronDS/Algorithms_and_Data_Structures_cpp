@@ -3,7 +3,6 @@
 #include <algorithm>
 using namespace std;
 
-
 class Node{
     public:
     int value;
@@ -73,11 +72,14 @@ class LinkedList{
                 Node*toDelete = current;
                 if(previous == nullptr){
                     head = current->next;
+                    if(current->next == nullptr){
+                        tail = head;
+                    }
                     delete toDelete;
                     return;
                 } 
                 else if(current->next == nullptr){
-                    previous->next = nullptr;
+                    previous->next = current->next;
                     tail = previous;
                     delete toDelete;
                     return;

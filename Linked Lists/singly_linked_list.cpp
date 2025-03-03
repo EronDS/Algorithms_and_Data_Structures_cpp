@@ -72,7 +72,7 @@ class LinkedList{
                 Node*toDelete = current;
                 if(previous == nullptr){
                     head = current->next;
-                    if(current->next == nullptr){
+                    if(head->next == nullptr){
                         tail = head;
                     }
                     delete toDelete;

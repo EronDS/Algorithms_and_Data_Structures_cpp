@@ -3,6 +3,7 @@
 #include <algorithm>
 using namespace std;
 
+
 class Node{
     public:
     int value;
@@ -64,36 +65,34 @@ class LinkedList{
     }
     
     void removeElement(int element){
-        Node*temp_node = head;
-        if(head == nullptr){
-            cout << "Element not Found, Empty List!" << endl;
-            return;
-        }
-        else if(head->value == element){
-            head = head->next;
-            delete temp_node;
-        }
-        else if(tail->value == element){
-            while(temp_node->next->next != nullptr){temp_node = temp_node->next;}
-            Node* toDeleteTail = temp_node->next;
-            tail = temp_node;
-            tail->next = toDeleteTail->next;
-            delete toDeleteTail;
-            return;
-        }
-        else{
-            while(temp_node->next != nullptr){
-                if(temp_node->next->value == element){
-                    Node*toDelete = temp_node->next;
-                    temp_node->next = temp_node->next->next;
+        Node*current=head;
+        Node*previous=nullptr;
+
+        while(current!=nullptr){
+            if(current->value == element){
+                Node*toDelete = current;
+                if(previous == nullptr){
+                    head = current->next;
                     delete toDelete;
+                    return;
+                } 
+                else if(current->next == nullptr){
+                    previous->next = nullptr;
+                    tail = previous;
+                    delete toDelete;
+                    return;
                 }
                 else{
-                    temp_node = temp_node ->next;
+                    previous->next = current->next;
+                    delete toDelete;
+                    return;
                 }
+
             }
-            return;
+            previous = current;
+            current = current->next;
         }
+        return;
     }
 
     void describe(){
@@ -244,18 +243,12 @@ int main(){
     linked_list.addTail(3);
     linked_list.addHead(0);
     linked_list.describe();
-    cout << linked_list.findElement(0) << endl;
-    linked_list.removeElement(3);
+    linked_list.removeElement(2);
     linked_list.describe();
-    cout << linked_list.size() << endl;
-    cout << "Reversing" << endl;
-    linked_list.reverse();
+    linked_list.addTail(4);
     linked_list.describe();
-    linked_list.insertAt(20, linked_list.size()-1);
-    linked_list.describe();
-    linked_list.peekHead();
-    linked_list.peekTail();
-    linked_list.ordenize();
+    linked_list.removeElement(0);
+    linked_list.addHead(10);
     linked_list.describe();
     return 0;
 }

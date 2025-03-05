@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include <cstdlib> 
+#include <cstdlib>
 using namespace std;
 
 class Node
@@ -8,6 +8,7 @@ class Node
 public:
     int value;
     vector<Node *> next;
+    int index;
     Node(int value, int height)
         : value(value), next(height, nullptr) {}
 };
@@ -30,11 +31,13 @@ public:
         return chosen_height;
     }
 
-    void addHead(int value){
+    void addHead(int value)
+    {
         int chosen_height = getRandomHeight();
-        Node*new_node = new Node(value, max_height); 
-        for(int i = 0; i<chosen_height; i++){
-            Node*current_head = heads[i];
+        Node *new_node = new Node(value, max_height);
+        for (int i = 0; i < chosen_height; i++)
+        {
+            Node *current_head = heads[i];
             new_node->next[i] = current_head;
             heads[i] = new_node;
         }
@@ -133,6 +136,57 @@ public:
         }
         delete toDelete;
     }
+
+    void insertAt(int value, int index)
+    {
+        indexate();
+        int chosen_height = getRandomHeight();
+        if (index == 0)
+        {
+            addHead(value);
+        }
+        else
+        {
+            Node *new_node = new Node(value, max_height);
+            for (int i = 0; i < chosen_height; i++)
+            {
+                Node *current = heads[i];
+                Node *prev = nullptr;
+                while (current != nullptr)
+                {
+
+                    if ((prev != nullptr && prev->index < index && current->index >= index))
+                    {
+                        prev->next[i] = new_node;
+                        new_node->next[i] = current;
+                    }
+                    prev = current;
+                    current = current->next[i];
+                }
+                if (prev != nullptr && prev->index <= index && current == nullptr)
+                {
+                    prev->next[i] = new_node;
+                    new_node->next[i] = current;
+                }
+            }
+
+            indexate();
+        }
+    }
+
+    void indexate()
+    {
+        Node *current = heads[0];
+        int current_id = 0;
+
+        while (current != nullptr)
+        {
+            current->index = current_id;
+            current = current->next[0];
+            current_id++;
+        }
+    }
+
     Node *findElement(int element)
     {
         for (int i = max_height - 1; i >= 0; i--)
@@ -162,7 +216,7 @@ public:
             Node *current_node = heads[i];
             while (current_node != nullptr)
             {
-                cout << current_node << " -> ";
+                cout << current_node->index << " -> ";
                 current_node = current_node->next[i];
             }
             cout << "nullptr " << endl;
@@ -188,12 +242,14 @@ int main()
     cout << " ---------------- " << endl;
     skip_list.removeElement(7);
     skip_list.removeElement(12);
-    skip_list.removeElement(80); 
+    skip_list.removeElement(80);
     skip_list.addTail(90);
     skip_list.addTail(100);
     skip_list.addHead(0);
     skip_list.addHead(5);
     skip_list.print();
     skip_list.findElement(100);
+    skip_list.insertAt(44, 12);
+    skip_list.print();
     return 0;
 }

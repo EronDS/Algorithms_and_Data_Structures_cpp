@@ -1,4 +1,4 @@
-# Algorithms and Data Structures
+# Algorithms and Data Structures (C++)
 
 This repository contains implementations of various algorithms and data structures in C++. My focus is on understanding the theoretical foundations while developing practical implementations independently, referring to books only when necessary.
 

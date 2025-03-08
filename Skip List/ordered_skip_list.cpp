@@ -2,12 +2,8 @@
 #include <vector>
 
 using namespace std;
-// WORKING IN PROGRESS ... (not completed.).
 
-// TODO: 
-// protected: addHead, addTail
-// public: insert (ordered by value)
-// fix segmentation fault at insert(23) ... strange behavior, probably correct the if statements.
+// TODO: deleteAt;
 
 class Node
 {
@@ -34,56 +30,40 @@ public:
         }
         return chosen_height;
     }
-    void insert(int value)
-    {
+
+
+    void insert(int value){
+        Node* new_node = new Node(value, max_height);
         int chosen_height = getRandomHeight();
-        Node *new_node = new Node(value, max_height);
+        
+        for(int i = 0; i<chosen_height;i++){
+            Node*current = heads[i];
+            Node*prev = nullptr;
 
-        Node *current = heads[0];
-        Node *prev = nullptr;
-
-        if (current == nullptr || current->value > value)
-        {
-            for (int i = 0; i < chosen_height; i++)
-            {
+            if(current == nullptr){
+                heads[i] = new_node;
+                continue;
+            }
+            else if(current->value > new_node->value){
                 new_node->next[i] = current;
                 heads[i] = new_node;
+                continue;
             }
-            return;
-        }
 
-        else
-        {
-            for (int i = 0; i < chosen_height; i++)
-            
-            {
-                Node *current = heads[i];
-                Node *prev = nullptr;
-
-                while (current != nullptr)
-                {
-                    if (current->value > value && (prev == nullptr || prev->value <= value))
-                    {
-                        prev->next[i] = new_node;
-                        new_node->next[i] = current;
-                        break;
-                    }
-                    
-                    prev = current;
-                    current = current->next[i];
-                }
-                if(current == nullptr && prev->value <= value){
-                    prev->next[i] = new_node;
-                    new_node->next[i] = current;
-                }
+            while(current!=nullptr && current->value < new_node->value){
+                prev = current;
+                current = current->next[i];
             }
+            new_node->next[i] = current;
+            prev->next[i] = new_node;
+        
         }
     }
-
     void print()
     {
+        if (heads[0] == nullptr){cout << "Empty List" << endl;return;}
         for (int i = 0; i < max_height; i++)
-        {
+        {  
             cout << "Level " << i << ": " << endl;
             Node *current = heads[i];
             while (current != nullptr)
@@ -103,7 +83,7 @@ int main()
     ordered_skip_list.insert(42);
     ordered_skip_list.insert(17);
     ordered_skip_list.insert(89);
-    //ordered_skip_list.insert(23); // segmentation fault here -> to be corrected;
+    ordered_skip_list.insert(23); 
     ordered_skip_list.insert(56);
     ordered_skip_list.insert(11);
     ordered_skip_list.insert(74);

@@ -1,0 +1,18 @@
+digraph AVL {
+    node [shape=circle, style=filled, fillcolor=lightblue];
+    12 [label="12\nbf:1"];
+    12 -> 5;
+    5 [label="5\nbf:1"];
+    5 -> 2;
+    2 [label="2\nbf:0"];
+    2 -> 1;
+    1 [label="1\nbf:0"];
+    2 -> 3;
+    3 [label="3\nbf:0"];
+    5 -> 7;
+    7 [label="7\nbf:0"];
+    12 -> 15;
+    15 [label="15\nbf:-1"];
+    15 -> 20;
+    20 [label="20\nbf:0"];
+}
